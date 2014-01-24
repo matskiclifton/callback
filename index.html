@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+	<title>Math's cool comments page</title>
+		<link rel="stylesheet" href="css/style.css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#views').submit(function(){
+	var name = $('#views #name').val();			// get form data
+    var comment = $('#views #comment').val();
+	var data_json = {'name':name, 'comment':comment};		// put form data in a JSON format that will be sent to the server
+$.ajax({				// sets the ajax() method to send data through POST to a PHP script
+	type: 'post',
+		url: 'callback.php',
+		data: data_json,
+				timeout: 10000,        // sets timeout for the request (10 seconds)
+			error: function(xhr, status, error) { alert('Error: '+ xhr.status + error); },// if an error occures
+	   success: function(response) { $('#response').prepend(response);}// when the request succeeds, place the response in a HTML div
+    });//End ajax
+   		event.preventDefault(); // required to not open callback.php when form is submited
+   		$('#comment').val('');
+   			$("#name").focus(function(){ 
+  				$(this).val(""); 
+	});//End focus function
+  });//End Submit function
+  // $('#views').keypress(function(enter){
+      // if(enter.keyCode==13)
+      // $('#button').click();
+    // });//End keypress
+});//End ready function
+		</script>
+	</head>
+<body>
+	<h1 style="font-family: Impact, Charcoal, sans-serif; font-size: 50px;">Welcome to Math's cool comments page!</h1>
+<div id="container">
+	<h4>Please place a comment and don't forget to enter your name.</h4>
+	 <form action="callback.php" method="post" id="views">
+ 		<label id="name_label">Name:</label><input type="text" name="name" id="name" />
+ 			<input type="submit" value="submit" id="button"/><br /><br />
+		<label id="com_label">Comments:</label><br />
+	<textarea name="comment" id="comment" cols="100" rows="10"></textarea>
+</form>
+			<div id="response"></div>
+		</div>
+	</body>
+</html>
